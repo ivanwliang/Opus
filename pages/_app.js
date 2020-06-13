@@ -1,17 +1,9 @@
 import React from 'react'
 import '../styles/index.css'
 
-const GlobalStyles = ({ children }) => {
-  return <div className="bg-gray-50">{children}</div>
-}
-
 // eslint-disable-next-line get-off-my-lawn/prefer-arrow-functions
 function MyApp({ Component, pageProps }) {
-  return (
-    <GlobalStyles>
-      <Component {...pageProps} />
-    </GlobalStyles>
-  )
+  return <Component {...pageProps} />
 }
 
 /*
