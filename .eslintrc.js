@@ -9,6 +9,7 @@ module.exports = {
     'react/prop-types': 0,
     'sort-keys': 0,
     'node/no-unpublished-require': 0,
-    'jsx-a11y/anchor-is-valid': 0
+    'jsx-a11y/anchor-is-valid': 0,
+    'eslint-comments/disable-enable-pair': 0
   }
 }
