@@ -2,7 +2,7 @@ import React from 'react'
 
 import Navbar from '../components/Navbar'
 
-const MarketingLayout = ({ children }) => {
+const PublicLayout = ({ children }) => {
   return (
     <>
       <Navbar />
@@ -11,4 +11,4 @@ const MarketingLayout = ({ children }) => {
   )
 }
 
-export default MarketingLayout
+export default PublicLayout

@@ -10,6 +10,11 @@ module.exports = {
     'sort-keys': 0,
     'node/no-unpublished-require': 0,
     'jsx-a11y/anchor-is-valid': 0,
-    'eslint-comments/disable-enable-pair': 0
+    'eslint-comments/disable-enable-pair': 0,
+    'no-alert': 0,
+    'objects/no-object-properties-first-line': 0,
+    'objects/no-object-properties-one-line': 0,
+    'objects/no-object-properties-last-line': 0,
+    'no-console': 0
   }
 }
