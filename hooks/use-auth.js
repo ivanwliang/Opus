@@ -50,7 +50,7 @@ function useProvideAuth() {
    * to save the user to state
    */
   const signIn = (email, password) => {
-    firebase
+    return firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((res) => {

@@ -123,6 +123,7 @@ const Navbar = () => {
                   />
                 </button>
               </div>
+
               {/* <!--
             Profile dropdown panel, show/hide based on dropdown state.
 

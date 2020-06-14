@@ -1,9 +1,15 @@
 import React from 'react'
+
+import { ProvideAuth } from '../hooks/use-auth'
 import '../styles/index.css'
 
 // eslint-disable-next-line get-off-my-lawn/prefer-arrow-functions
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return (
+    <ProvideAuth>
+      <Component {...pageProps} />
+    </ProvideAuth>
+  )
 }
 
 /*
