@@ -1,10 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import PublicLayout from '../layouts/PublicLayout'
 import { useAuth } from '../hooks/use-auth'
+import { db } from '../lib/firebase'
 
 const Home = () => {
   const auth = useAuth()
+
+  useEffect(() => {
+    const fetch = async () => {
+      const posts = await db.collection('posts').get()
+
+      console.log({ posts })
+    }
+
+    fetch()
+  }, [])
 
   return (
     <PublicLayout>

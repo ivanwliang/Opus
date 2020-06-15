@@ -5,7 +5,7 @@ const AppLayout = ({ children }) => {
     <>
       <div className="h-screen flex overflow-hidden bg-gray-100">
         {/* <!-- Off-canvas menu for mobile --> */}
-        <div className="md:hidden">
+        <div className="hidden md:hidden">
           <div className="fixed inset-0 flex z-40">
             {/* <!--
         Off-canvas menu overlay, show/hide based on off-canvas menu state.
