@@ -9,10 +9,10 @@ export default () => {
   const auth = useAuth()
   const router = useRouter()
 
-  const signUp = ({ email, password }) => {
+  const signUp = ({ email, password, name }) => {
     auth
       // hardcoded display name for now
-      .signUp(email, password, 'Ivan')
+      .signUp(email, password, name)
       .then(() => router.push('/dashboard'))
       .catch((error) => {
         alert(error.message)
