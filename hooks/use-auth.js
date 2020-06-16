@@ -1,6 +1,7 @@
 /* eslint-disable import/exports-last */
 /* eslint-disable get-off-my-lawn/prefer-arrow-functions */
 import React, { useState, useEffect, useContext, createContext } from 'react'
+import fetch from 'isomorphic-unfetch'
 
 import firebase from '../lib/firebase'
 
@@ -44,14 +45,26 @@ function useProvideAuth() {
       })
   }
 
-  const signUp = (email, password) => {
+  const signUp = (email, password, displayName) => {
     return firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then((res) => {
-        setUser(res.user)
+      .then(async (res) => {
+        // Create the user profile in our database
 
-        return res.user
+        const resUser = res.user
+
+        await fetch('/api/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ resUser, displayName })
+        })
+
+        setUser(resUser)
+
+        return resUser
       })
   }
 
@@ -87,10 +100,19 @@ function useProvideAuth() {
    * with the latest auth object.
    */
   useEffect(() => {
-    // eslint-disable-next-line no-shadow
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user)
+    const unsubscribe = firebase.auth().onAuthStateChanged((resUser) => {
+      if (resUser) {
+        // This call to create a new user profile is for oauth providers that
+        // don't go through our sign up form
+        // const newUser = await fetch('/api/create', {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json'
+        //   },
+        //   body: JSON.stringify({ resUser })
+        // })
+
+        setUser(resUser)
       } else {
         setUser(false)
       }

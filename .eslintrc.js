@@ -16,6 +16,7 @@ module.exports = {
     'objects/no-object-properties-one-line': 0,
     'objects/no-object-properties-last-line': 0,
     'no-console': 0,
-    'multiline-comment-style': 0
+    'multiline-comment-style': 0,
+    'consistent-return': 0
   }
 }
