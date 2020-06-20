@@ -17,7 +17,9 @@ const Logo = () => {
         />
       </svg>
       <Link href="/">
-        <a className="ml-2 text-3xl font-bold">Opus</a>
+        <a className="ml-2 text-2xl sm:text-3xl font-extrabold text-gray-900">
+          Opus
+        </a>
         {/* <img
       className="block lg:hidden h-8 w-auto"
       src="/img/logos/workflow-mark-on-white.svg"

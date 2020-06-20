@@ -11,7 +11,6 @@ export default () => {
 
   const signUp = ({ email, password, name }) => {
     auth
-      // hardcoded display name for now
       .signUp(email, password, name)
       .then(() => router.push('/dashboard'))
       .catch((error) => {
