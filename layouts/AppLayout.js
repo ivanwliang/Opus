@@ -11,6 +11,7 @@ const AppLayout = ({ children }) => {
       </Head>
 
       <main className="max-w-7xl mx-auto">{children}</main>
+
     </>
   )
 }

@@ -3,6 +3,9 @@ import React from 'react'
 import { ProvideAuth } from '../hooks/use-auth'
 import '../styles/index.css'
 
+// temporary styles for the dashboard to see the structure. to be removed
+import '../styles/dashboard.css'
+
 // eslint-disable-next-line get-off-my-lawn/prefer-arrow-functions
 function MyApp({ Component, pageProps }) {
   return (
