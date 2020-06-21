@@ -54,7 +54,7 @@ function useProvideAuth() {
 
         const resUser = res.user
 
-        await fetch('/api/create', {
+        await fetch('/api/profile', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

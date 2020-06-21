@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
@@ -9,14 +9,21 @@ import PublicLayout from '../layouts/PublicLayout'
 export default () => {
   const auth = useAuth()
   const router = useRouter()
-
   const { register, handleSubmit, errors } = useForm()
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const signIn = ({ email, password }) => {
+    setIsLoading(true)
+
     auth
       .signIn(email, password)
-      .then(() => router.push('/dashboard'))
+      .then(() => {
+        router.push('/dashboard')
+        setIsLoading(false)
+      })
       .catch((error) => {
+        setIsLoading(false)
         alert(error.message)
       })
   }
@@ -99,7 +106,9 @@ export default () => {
                 <span className="block w-full rounded-md shadow-sm">
                   <button
                     type="submit"
-                    className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
+                    className={`${
+                      isLoading && 'spinner'
+                    }  w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out`}
                   >
                     Sign In
                   </button>

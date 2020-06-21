@@ -16,6 +16,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-hook-form": "^5.7.2",
+    "react-query": "^1.5.9",
     "react-transition-group": "^4.4.1"
   },
   "devDependencies": {
@@ -24,6 +25,7 @@
     "eslint-config-get-off-my-lawn": "^5.0.1",
     "postcss-preset-env": "^6.7.0",
     "prettier": "^2.0.5",
-    "tailwindcss": "^1.4.6"
+    "tailwindcss": "^1.4.6",
+    "tailwindcss-spinner": "^1.0.0"
   }
 }
