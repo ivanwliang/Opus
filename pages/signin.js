@@ -120,13 +120,13 @@ export default () => {
               </div>
 
               <div className="mt-3">
-                <Link href="/signup">
-                  <div className="flex justify-center text-sm leading-5">
+                <div className="flex justify-center text-sm leading-5">
+                  <Link href="/signup">
                     <a className="cursor-pointer font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">
                       Create a new account
                     </a>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
