@@ -10,9 +10,12 @@ const Dashboard = () => {
 
   return (
     <AppLayout>
-      <p>Opus App Dashboard</p>
+      <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:leading-9">
+        Opus Dashboard
+      </h2>
       <button
         type="button"
+        className="border border-cool-gray-900"
         onClick={() => auth.signOut().then(() => router.push('/'))}
       >
         Sign Out

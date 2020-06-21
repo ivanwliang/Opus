@@ -26,7 +26,7 @@ export default () => {
       <div className="min-h-full bg-gray-50 flex flex-col justify-center py-6 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-3 text-center text-3xl leading-9 font-extrabold text-gray-900">
-            Sign up for a new account
+            Sign in to your account
           </h2>
         </div>
 
