@@ -14,24 +14,20 @@ export default async (req, res) => {
     }
 
     //if no other req methods, then assumes it is a GET function
-    let annualGoals = null;
+    let weeklyGoals = null;
     //if no user request body, then skip
     // if(!req.body.user) {
     //     res.status(400).json('no user provided');
-    //     console.log('error');
-        
     //     return;
     // }
     try {
-        annualGoals = await prisma.annualGoal.findMany({
+        weeklyGoals = await prisma.weeklyGoal.findMany({
             // hardcoded userId to test the api functionality
             where: { userId: 'Oa308DyTYrNsKqQnDGKw9aUJhBJ2' }
         });
-        console.log(annualGoals);
-        
     } catch (error) {
         console.error(error);
     }
-    res.status(200).json(annualGoals);
+    res.status(200).json(weeklyGoals);
     return;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 import { useAuth } from '../hooks/use-auth'
@@ -8,7 +8,73 @@ import AppLayout from '../layouts/AppLayout'
 const Dashboard = () => {
   const auth = useAuth()
   const router = useRouter()
+  //state for changing "tabs" in the main dashboard
   const [desiredGoal, setDesiredGoal] = useState('Nickname1')
+  //states to capture ALL the annual, monthly, and weekly goals
+  const [annualGoals, setAnnualGoals] = useState(null);
+  const [monthlyGoals, setMonthlyGoals] = useState(null);
+  const [weeklyGoals, setWeeklyGoals] = useState(null);
+  //state to capture any error messages from the api
+  const [error, setErrorMessage] = useState(null);
+
+  //similar to componentDidMount. This fetches goal data from the api
+  useEffect(()=> { 
+    const options = {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json"
+      },
+    };
+
+    fetch('/api/annualGoals', options)
+      .then(res => {
+        if(!res.ok) {
+          throw new Error('Something went wrong, please try again later.');
+        }
+        return res;
+      })
+      .then(res => res.json())
+      .then(data => {
+        setAnnualGoals(data)
+      })
+      .catch(err => {
+        setErrorMessage(err);
+      });
+
+    fetch('/api/monthlyGoals', options)
+      .then(res => {
+        if(!res.ok) {
+          throw new Error('Something went wrong, please try again later.');
+        }
+        return res;
+      })
+      .then(res => res.json())
+      .then(data => {
+        setMonthlyGoals(data)
+      })
+      .catch(err => {
+        setErrorMessage(err);
+      });
+
+    fetch('/api/weeklyGoals', options)
+      .then(res => {
+        if(!res.ok) {
+            throw new Error('Something went wrong, please try again later.');
+        }
+        return res;
+      })
+      .then(res => res.json())
+      .then(data => {
+        setWeeklyGoals(data)
+      })
+      .catch(err => {
+        setErrorMessage(err);
+      });
+
+      console.log(annualGoals);
+      console.log(monthlyGoals);
+      console.log(weeklyGoals);
+  }, []);
 
   return (
     <AppLayout>
