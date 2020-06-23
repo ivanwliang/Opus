@@ -18,6 +18,25 @@ export function ProvideAuth({ children }) {
   return <authContext.Provider value={auth}>{children}</authContext.Provider>
 }
 
+// Grab user from DB with additional fields instead of using firebase's user object
+const getUserFromPrisma = async (user) => {
+  if (user) return null
+
+  let dbUser = null
+
+  try {
+    dbUser = await prisma.user.findOne({
+      where: {
+        id: user.uid
+      }
+    })
+  } catch (error) {
+    console.error(error)
+  }
+
+  return dbUser
+}
+
 /*
  * Hook for child components to get the auth object
  * and re-render when it changes

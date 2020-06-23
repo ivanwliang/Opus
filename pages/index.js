@@ -1,11 +1,21 @@
 import React from 'react'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 
+import { useAuth } from '../hooks/use-auth'
 import PublicLayout from '../layouts/PublicLayout'
 
 const Home = () => {
+  const router = useRouter()
+  const auth = useAuth()
+
+  if (auth.user) {
+    router.push('/dashboard')
+  }
+
   return (
     <PublicLayout>
+      <pre>{auth.user && JSON.stringify(auth.user, null, 2)}</pre>
       <div className="mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
         <main className="mt-6 mx-auto sm:mt-8 sm:px-6 md:mt-12 lg:mt-16 xl:mt-20">
           <div className="text-center">
