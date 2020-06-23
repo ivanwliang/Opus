@@ -8,6 +8,9 @@ import Dashboard from './dashboard'
 import Home from '.'
 import '../styles/index.css'
 
+// temporary styles for the dashboard to see the structure. to be removed
+import '../styles/dashboard.css'
+
 // eslint-disable-next-line get-off-my-lawn/prefer-arrow-functions
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
