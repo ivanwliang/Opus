@@ -27,6 +27,5 @@ export default async (req, res) => {
     console.error(error)
   }
 
-  console.log(dbUser)
   res.json(dbUser)
 }
