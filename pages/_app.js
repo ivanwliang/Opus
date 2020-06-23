@@ -13,10 +13,10 @@ import '../styles/dashboard.css'
 
 // eslint-disable-next-line get-off-my-lawn/prefer-arrow-functions
 function MyApp({ Component, pageProps }) {
-  const router = useRouter()
-  const auth = useAuth()
+  // const router = useRouter()
+  // const auth = useAuth()
 
-  let ComponentToRender = Component
+  // let ComponentToRender = Component
 
   // if (auth) {
   //   if (
@@ -28,13 +28,13 @@ function MyApp({ Component, pageProps }) {
   //   }
   // }
 
-  if (!auth && router.pathname === '/dashboard') {
-    ComponentToRender = Home
-  }
+  // if (!auth && router.pathname === '/dashboard') {
+  //   ComponentToRender = Home
+  // }
 
   return (
     <ProvideAuth>
-      <ComponentToRender {...pageProps} />
+      <Component {...pageProps} />
     </ProvideAuth>
   )
 }

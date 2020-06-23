@@ -31,3 +31,6 @@ yarn-error.log*
 
 # prisma env
 /prisma/.env
+
+# firebase admin
+firebase-adminsdk.js

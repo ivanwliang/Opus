@@ -19,22 +19,21 @@ export function ProvideAuth({ children }) {
 }
 
 // Grab user from DB with additional fields instead of using firebase's user object
-const getUserFromPrisma = async (user) => {
-  if (user) return null
+export const verifyTokenAndGetUser = async (user) => {
+  if (!user) return null
 
-  let dbUser = null
+  const idToken = await user.getIdToken(true)
 
-  try {
-    dbUser = await prisma.user.findOne({
-      where: {
-        id: user.uid
-      }
-    })
-  } catch (error) {
-    console.error(error)
-  }
+  console.log(idToken)
+  const dbUser = await fetch('/api/verifyToken', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(idToken)
+  })
 
-  return dbUser
+  return dbUser.json()
 }
 
 /*
@@ -58,6 +57,8 @@ function useProvideAuth() {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((res) => {
+        // const dbUser = await verifyTokenAndGetUser(res.user)
+
         setUser(res.user)
 
         return res.user
@@ -80,6 +81,8 @@ function useProvideAuth() {
           },
           body: JSON.stringify({ resUser, displayName })
         })
+
+        // const dbUser = await verifyTokenAndGetUser(resUser)
 
         setUser(resUser)
 
@@ -130,6 +133,8 @@ function useProvideAuth() {
         //   },
         //   body: JSON.stringify({ resUser })
         // })
+
+        // const dbUser = await verifyTokenAndGetUser(resUser)
 
         setUser(resUser)
       } else {

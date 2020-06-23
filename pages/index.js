@@ -9,9 +9,9 @@ const Home = () => {
   const router = useRouter()
   const auth = useAuth()
 
-  if (auth.user) {
-    router.push('/dashboard')
-  }
+  // if (auth.user) {
+  //   router.push('/dashboard')
+  // }
 
   return (
     <PublicLayout>
