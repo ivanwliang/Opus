@@ -1,12 +1,8 @@
-import { PrismaClient } from '@prisma/client'
-
 import admin from '../../lib/firebase-admin'
 
-const prisma = new PrismaClient()
-
 export default async (req, res) => {
-  const idToken = req.body
-  let dbUser = null
+  const idToken = req.headers.authorization.split(' ')[1]
+
   let uid = null
 
   try {
@@ -17,15 +13,5 @@ export default async (req, res) => {
     console.error(error)
   }
 
-  try {
-    dbUser = await prisma.user.findOne({
-      where: {
-        id: uid
-      }
-    })
-  } catch (error) {
-    console.error(error)
-  }
-
-  res.json(dbUser)
+  res.status(200).json({ uid })
 }

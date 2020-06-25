@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import fetch from 'isomorphic-unfetch'
 
 import { useAuth } from '../hooks/use-auth'
 import PublicLayout from '../layouts/PublicLayout'
@@ -9,13 +10,33 @@ const Home = () => {
   const router = useRouter()
   const auth = useAuth()
 
+  const [uid, setUid] = useState('')
+
   // if (auth.user) {
   //   router.push('/dashboard')
   // }
 
+  useEffect(() => {
+    if (auth.user) {
+      auth.user.getIdToken(true).then((token) => {
+        fetch('/api/verifyToken', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+        })
+          .then((res) => res.json())
+          // eslint-disable-next-line no-shadow
+          .then(({ uid }) => setUid(uid))
+      })
+    }
+  }, [auth.user])
+
   return (
     <PublicLayout>
-      <pre>{auth.user && JSON.stringify(auth.user, null, 2)}</pre>
+      <pre>{uid && JSON.stringify(uid, null, 2)}</pre>
+      {/* <pre>{auth.user && JSON.stringify(auth.user, null, 2)}</pre> */}
       <div className="mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
         <main className="mt-6 mx-auto sm:mt-8 sm:px-6 md:mt-12 lg:mt-16 xl:mt-20">
           <div className="text-center">
