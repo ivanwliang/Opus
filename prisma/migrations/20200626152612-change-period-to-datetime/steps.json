@@ -1,0 +1,23 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "AnnualGoal",
+      "field": "year",
+      "type": "DateTime"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "MonthlyGoal",
+      "field": "month",
+      "type": "DateTime"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "WeeklyGoal",
+      "field": "week",
+      "type": "DateTime"
+    }
+  ]
+}
