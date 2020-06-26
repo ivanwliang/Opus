@@ -10,8 +10,7 @@ const AppLayout = ({ children }) => {
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
       </Head>
 
-      <main className="max-w-7xl mx-auto">{children}</main>
-
+      <main className="max-w-7xl ml-5 mx-auto">{children}</main>
     </>
   )
 }
