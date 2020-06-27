@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
+import { format, formatISO, getYear, getMonth, startOfWeek } from 'date-fns'
 
 import fetch from '../utils/fetch'
 import { useAuth } from '../hooks/use-auth'
@@ -64,12 +65,15 @@ const Dashboard = () => {
   // state for changing "tabs" in the main dashboard
   // const [desiredGoal, setDesiredGoal] = useState('')
   const [category, setCategory] = useState('Finance')
+  const [year, setYear] = useState(formatISO(Date.now()))
+  const [month, setMonth] = useState(formatISO(Date.now()))
+  const [week, setWeek] = useState(startOfWeek(Date.now()))
 
   const {
     status: annualStatus,
     data: annualData,
     error: annualError
-  } = useQuery('annualGoals', () => fetch(`/api/annualGoals`))
+  } = useQuery('annualGoals', () => fetch(`/api/annualGoals?year=${year}`))
 
   const { status: monthlyStatus, data: monthlyData } = useQuery(
     'monthlyGoals',
@@ -95,6 +99,12 @@ const Dashboard = () => {
 
   return (
     <AppLayout>
+      {annualData.map((goal) => (
+        <p key={goal.id}>{goal.goalStatement}</p>
+      ))}
+      <p>Year: {year}</p>
+      <p>Month: {month}</p>
+      <p>Week: {format(week, 'MM/dd/yyyy')}</p>
       <button
         type="button"
         className="border border-cool-gray-900"

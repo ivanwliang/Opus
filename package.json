@@ -10,6 +10,7 @@
   "dependencies": {
     "@prisma/client": "^2.1.1",
     "@tailwindcss/ui": "^0.3.0",
+    "date-fns": "^2.14.0",
     "firebase": "^7.15.5",
     "firebase-admin": "^8.12.1",
     "isomorphic-unfetch": "^3.0.0",

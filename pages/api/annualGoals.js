@@ -1,3 +1,5 @@
+import { getYear, startOfYear, endOfYear, parseISO, toDate } from 'date-fns'
+
 import prisma from '../../lib/prisma'
 
 export default async (req, res) => {
@@ -14,18 +16,20 @@ export default async (req, res) => {
   }
 
   // if no other req methods, then assumes it is a GET function
+  const { year } = req.query
+  const formattedYear = parseISO(year)
   let annualGoals = null
-  // if no user request body, then skip
-  // if(!req.body.user) {
-  //     res.status(400).json('no user provided');
-  //     console.log('error');
 
-  //     return;
-  // }
   try {
     annualGoals = await prisma.annualGoal.findMany({
       // hardcoded userId to test the api functionality
-      where: { userId: 'Oa308DyTYrNsKqQnDGKw9aUJhBJ2' }
+      where: {
+        userId: 'Oa308DyTYrNsKqQnDGKw9aUJhBJ2',
+        year: {
+          gte: startOfYear(formattedYear),
+          lt: endOfYear(formattedYear)
+        }
+      }
     })
     // console.log(annualGoals);
   } catch (error) {
