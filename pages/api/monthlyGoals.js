@@ -1,3 +1,5 @@
+import { parseISO, startOfMonth, endOfMonth } from 'date-fns'
+
 import prisma from '../../lib/prisma'
 
 export default async (req, res) => {
@@ -14,17 +16,20 @@ export default async (req, res) => {
   }
 
   // if no other req methods, then assumes it is a GET function
+  const { month } = req.query
+  const formattedDate = parseISO(month)
   let monthlyGoals = null
 
-  // if no user request body, then skip
-  // if(!req.body.user) {
-  //     res.status(400).json('no user provided');
-  //     return;
-  // }
   try {
     monthlyGoals = await prisma.monthlyGoal.findMany({
       // hardcoded userId to test the api functionality
-      where: { userId: 'Oa308DyTYrNsKqQnDGKw9aUJhBJ2' }
+      where: { 
+        userId: 'Oa308DyTYrNsKqQnDGKw9aUJhBJ2',
+        month: {
+          gte: startOfMonth(formattedDate),
+          lt: endOfMonth(formattedDate)
+        }
+      }
     })
   } catch (error) {
     console.error(error)

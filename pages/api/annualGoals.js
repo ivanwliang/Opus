@@ -17,7 +17,7 @@ export default async (req, res) => {
 
   // if no other req methods, then assumes it is a GET function
   const { year } = req.query
-  const formattedYear = parseISO(year)
+  const formattedDate = parseISO(year)
   let annualGoals = null
 
   try {
@@ -26,8 +26,8 @@ export default async (req, res) => {
       where: {
         userId: 'Oa308DyTYrNsKqQnDGKw9aUJhBJ2',
         year: {
-          gte: startOfYear(formattedYear),
-          lt: endOfYear(formattedYear)
+          gte: startOfYear(formattedDate),
+          lt: endOfYear(formattedDate)
         }
       }
     })

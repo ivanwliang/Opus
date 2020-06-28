@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
-import { format, formatISO, getYear, getMonth, startOfWeek } from 'date-fns'
+import { format, formatISO, getYear, getMonth, startOfWeek, addDays, parseISO } from 'date-fns'
 
 import fetch from '../utils/fetch'
 import { useAuth } from '../hooks/use-auth'
@@ -72,20 +72,22 @@ const Dashboard = () => {
   // state for changing "tabs" in the main dashboard
   // const [desiredGoal, setDesiredGoal] = useState('')
   const [nickname, setNickname] = useState('')
-  const [year, setYear] = useState(formatISO(Date.now()))
-  const [month, setMonth] = useState(formatISO(Date.now()))
-  const [week, setWeek] = useState(startOfWeek(Date.now()))
+  const [date, setDate] = useState(formatISO(Date.now()))
+  // local state to determine the week of period for the app
+  const [weekOf, setWeekOf] = useState(startOfWeek(Date.now()))
 
-  // feteching data for annual, monthly, and weekly goals
-  const {status: annualStatus, data: annualData} = useQuery('annualGoals', () => fetch(`/api/annualGoals?year=${year}`));
-  const {status: monthlyStatus, data: monthlyData} = useQuery('monthlyGoals', () => fetch(`/api/monthlyGoals`));
-  const {status: weeklyStatus, data: weeklyData} = useQuery('weeklyGoals', () => fetch(`/api/weeklyGoals`));
+  // fetching data for annual, monthly, and weekly goals, and updates as weekOf local state updates
+  const {status: annualStatus, data: annualData} = useQuery(['annualGoals', { weekOf } ], () => fetch(`/api/annualGoals?year=${date}`));
+  const {status: monthlyStatus, data: monthlyData} = useQuery(['monthlyGoals', { weekOf } ], () => fetch(`/api/monthlyGoals?month=${date}`));
+  const {status: weeklyStatus, data: weeklyData} = useQuery(['weeklyGoals', { weekOf } ], () => fetch(`/api/weeklyGoals?week=${date}`));
 
   // once the data is available, set the default nickname for the user
   useEffect(() => {
     if (annualData) {
       setNickname(annualData[0].nickname);
   }}, [annualData])
+
+  // when the week change, repull the data with new period parameters
 
   // logic waiting for data to load before rendering the page
   // TBU for some type of loading animation
@@ -98,13 +100,9 @@ const Dashboard = () => {
   }
   
   // TBU error page for when there are problem pulling from the database
-  // 
+   
   return (
     <AppLayout>
-      {/* {annualData && annualData.map((goal) => (
-        <p key={goal.id}>{goal.goalStatement}</p>
-      ))} */}
-      
       <button
         type="button"
         className="border border-cool-gray-900"
@@ -112,7 +110,13 @@ const Dashboard = () => {
       >
         Sign Out
       </button>
-      <h1>Week of 6/21/2020</h1>
+      <h1>Week of {format(weekOf, 'M/d/yy')}</h1>
+      <div>
+        <button type="button" className="border border-cool-gray-900" onClick={() => setWeekOf(addDays(weekOf, -7))}>Prior Week</button>
+        <>  </>
+        <button type="button" className="border border-cool-gray-900" onClick={() => setWeekOf(addDays(weekOf, 7))}>Next Week</button>
+      </div>
+
       <div className="dashboard-container">
         {weeklyData && weeklyData.map((goal) => (
           <div key={goal.id} className="dashboard-summary">
@@ -130,7 +134,7 @@ const Dashboard = () => {
       <div className="dashboard-container">Some chart showing analytics</div>
       <div className="dashboard-container">
         <div className="dashboard-tab">
-          {annualData && annualData.map((goal) => (
+          {annualData.map((goal) => (
             <button
               key={goal.id}
               type="button"
@@ -142,12 +146,12 @@ const Dashboard = () => {
           ))}
         </div>
 
-        <CategoryGoals
+        {/* <CategoryGoals
           nickname={nickname}
           annualGoals={annualData}
           monthlyGoals={monthlyData}
           weeklyGoals={weeklyData}
-        />
+        /> */}
       </div>
     </AppLayout>
   )
