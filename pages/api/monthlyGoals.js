@@ -1,5 +1,5 @@
 import { parseISO, startOfMonth, endOfMonth } from 'date-fns'
-
+import moment from 'moment'
 import prisma from '../../lib/prisma'
 
 export default async (req, res) => {
@@ -17,7 +17,10 @@ export default async (req, res) => {
 
   // if no other req methods, then assumes it is a GET function
   const { month } = req.query
-  const formattedDate = parseISO(month)
+  // convert the month into a DateTime object, to match that of the Prisma database
+  const monthStartDate = moment(month).utc().startOf('month').toDate();
+  const monthEndDate = moment(month).utc().endOf('month').toDate();
+
   let monthlyGoals = null
 
   try {
@@ -26,8 +29,8 @@ export default async (req, res) => {
       where: { 
         userId: 'Oa308DyTYrNsKqQnDGKw9aUJhBJ2',
         month: {
-          gte: startOfMonth(formattedDate),
-          lt: endOfMonth(formattedDate)
+          gte: monthStartDate,
+          lte: monthEndDate
         }
       }
     })

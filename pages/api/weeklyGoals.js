@@ -1,5 +1,5 @@
 import { parseISO, startOfWeek, endOfWeek, formatISO, zonedTimeToUTC } from 'date-fns'
-
+import moment from 'moment'
 import prisma from '../../lib/prisma'
 
 export default async (req, res) => {
@@ -17,13 +17,11 @@ export default async (req, res) => {
 
   // if no other req methods, then assumes it is a GET function
   const { week } = req.query
-  const formattedDate = parseISO(week)
+  // convert the week into a DateTime object, to match that of the Prisma database
+  const weekStartDate = moment(week).utc().startOf('week').toDate();
+  const weekEndDate = moment(week).utc().endOf('week').toDate();
+  
   let weeklyGoals = null
-
-  console.log(formattedDate);
-  console.log(startOfWeek(formattedDate));
-  // console.log(getTimeZoneValue());
-  // console.log(zonedTimeToUTC(startOfWeek(formattedDate), getTimeZoneValue()))
 
   try {
     weeklyGoals = await prisma.weeklyGoal.findMany({
@@ -31,8 +29,8 @@ export default async (req, res) => {
       where: { 
         userId: 'Oa308DyTYrNsKqQnDGKw9aUJhBJ2',
         week: {
-          gte: startOfWeek(formattedDate),
-          lt: endOfWeek(formattedDate)
+          gte: weekStartDate,
+          lte: weekEndDate
         }
       }
     })
