@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 import prisma from '../../lib/prisma'
 
 export default async (req, res) => {
@@ -14,17 +16,23 @@ export default async (req, res) => {
   }
 
   // if no other req methods, then assumes it is a GET function
+  const { month } = req.query
+  // convert the month into a DateTime object, to match that of the Prisma database
+  const monthStartDate = moment(month).utc().startOf('month').toDate();
+  const monthEndDate = moment(month).utc().endOf('month').toDate();
+
   let monthlyGoals = null
 
-  // if no user request body, then skip
-  // if(!req.body.user) {
-  //     res.status(400).json('no user provided');
-  //     return;
-  // }
   try {
     monthlyGoals = await prisma.monthlyGoal.findMany({
       // hardcoded userId to test the api functionality
-      where: { userId: 'Oa308DyTYrNsKqQnDGKw9aUJhBJ2' }
+      where: { 
+        userId: 'Oa308DyTYrNsKqQnDGKw9aUJhBJ2',
+        month: {
+          gte: monthStartDate,
+          lte: monthEndDate
+        }
+      }
     })
   } catch (error) {
     console.error(error)

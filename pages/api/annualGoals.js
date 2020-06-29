@@ -1,4 +1,4 @@
-import { getYear, startOfYear, endOfYear, parseISO, toDate } from 'date-fns'
+import moment from 'moment'
 
 import prisma from '../../lib/prisma'
 
@@ -17,7 +17,10 @@ export default async (req, res) => {
 
   // if no other req methods, then assumes it is a GET function
   const { year } = req.query
-  const formattedYear = parseISO(year)
+  // convert the year into a DateTime object, to match that of the Prisma database
+  const yearStartDate = moment(year).utc().startOf('year').toDate();
+  const yearEndDate = moment(year).utc().endOf('year').toDate();
+
   let annualGoals = null
 
   try {
@@ -26,8 +29,8 @@ export default async (req, res) => {
       where: {
         userId: 'Oa308DyTYrNsKqQnDGKw9aUJhBJ2',
         year: {
-          gte: startOfYear(formattedYear),
-          lt: endOfYear(formattedYear)
+          gte: yearStartDate,
+          lte: yearEndDate
         }
       }
     })
