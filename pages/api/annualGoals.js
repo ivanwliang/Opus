@@ -18,6 +18,10 @@ export default async (req, res) => {
   // if no other req methods, then assumes it is a GET function
   const { year } = req.query
   const formattedYear = parseISO(year)
+
+  console.log(formattedYear)
+  console.log('start of year', startOfYear(formattedYear))
+
   let annualGoals = null
 
   try {
