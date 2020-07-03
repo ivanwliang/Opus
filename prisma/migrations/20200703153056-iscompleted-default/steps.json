@@ -1,0 +1,116 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "AnnualGoal",
+      "field": "isCompleted",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "AnnualGoal",
+          "field": "isCompleted"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "AnnualGoal",
+          "field": "isCompleted"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "false"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "AnnualGoal",
+      "field": "status"
+    },
+    {
+      "tag": "CreateField",
+      "model": "MonthlyGoal",
+      "field": "isCompleted",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "MonthlyGoal",
+          "field": "isCompleted"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "MonthlyGoal",
+          "field": "isCompleted"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "false"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "MonthlyGoal",
+      "field": "status"
+    },
+    {
+      "tag": "CreateField",
+      "model": "WeeklyGoal",
+      "field": "isCompleted",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "WeeklyGoal",
+          "field": "isCompleted"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "WeeklyGoal",
+          "field": "isCompleted"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "false"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "WeeklyGoal",
+      "field": "status"
+    }
+  ]
+}

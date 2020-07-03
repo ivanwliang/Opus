@@ -1,0 +1,59 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "AnnualGoal",
+      "field": "goalDescription",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "AnnualGoal",
+      "field": "category"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "AnnualGoal",
+      "field": "status",
+      "type": "Boolean"
+    },
+    {
+      "tag": "CreateField",
+      "model": "MonthlyGoal",
+      "field": "goalDescription",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "MonthlyGoal",
+      "field": "category"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "MonthlyGoal",
+      "field": "status",
+      "type": "Boolean"
+    },
+    {
+      "tag": "CreateField",
+      "model": "WeeklyGoal",
+      "field": "goalDescription",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "WeeklyGoal",
+      "field": "category"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "WeeklyGoal",
+      "field": "status",
+      "type": "Boolean"
+    }
+  ]
+}

@@ -7,7 +7,7 @@ import MonthlyGoalForm from '../components/MonthlyGoalForm'
 const Goals = () => {
   return (
     <AppLayout>
-      {/* <AnnualGoalForm /> */}
+      <AnnualGoalForm />
       <MonthlyGoalForm />
     </AppLayout>
   )

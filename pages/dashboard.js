@@ -181,6 +181,31 @@ const Dashboard = () => {
           weeklyGoals={weeklyData}
         />
       </div>
+      <span className="relative z-0 inline-flex shadow-sm rounded-md">
+        <button
+          type="button"
+          onClick={() => router.push('/goals')}
+          className="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150"
+        >
+          Add Annual Goals
+        </button>
+        <button
+          type="button"
+          disabled="true"
+          onClick={() => router.push('/monthlyGoals')}
+          className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 cursor-not-allowed opacity-50 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150"
+        >
+          Add Monthly Goals
+        </button>
+        <button
+          type="button"
+          disabled="true"
+          onClick={() => router.push('/weeklyGoals')}
+          className="-ml-px relative inline-flex items-center px-4 py-2 rounded-r-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 cursor-not-allowed opacity-50 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150"
+        >
+          Add Weekly Goals
+        </button>
+      </span>
     </AppLayout>
   )
 }

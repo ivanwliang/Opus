@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -27,7 +27,7 @@ model AnnualGoal {
   goalStatement   String
   goalDescription String?
   nickname        String
-  isCompleted     Boolean       @default(false)
+  status          Boolean
   createdAt       DateTime      @default(now())
   year            DateTime
   completionDate  DateTime?
@@ -42,7 +42,7 @@ model MonthlyGoal {
   goalStatement   String
   goalDescription String?
   nickname        String
-  isCompleted     Boolean      @default(false)
+  status          Boolean
   createdAt       DateTime     @default(now())
   month           DateTime
   completionDate  DateTime?
@@ -58,7 +58,7 @@ model WeeklyGoal {
   goalStatement   String
   goalDescription String?
   nickname        String
-  isCompleted     Boolean     @default(false)
+  status          Boolean
   createdAt       DateTime    @default(now())
   week            DateTime
   completionDate  DateTime?
