@@ -16,8 +16,13 @@ const CategoryGoals = ({
   weeklyGoals
 }) => {
   // TBU remove when this is not needed
-  if (!nickname || annualGoals.length < 1 || monthlyGoals.length < 1 || weeklyGoals.length < 1) {
-    return (<span>Loading...</span>)
+  if (
+    !nickname ||
+    annualGoals.length < 1 ||
+    monthlyGoals.length < 1 ||
+    weeklyGoals.length < 1
+  ) {
+    return <span>Loading...</span>
   }
 
   return (
@@ -76,15 +81,25 @@ const Dashboard = () => {
   const [weekOf, setWeekOf] = useState(moment().utc().startOf('week').format())
 
   // fetching data for annual, monthly, and weekly goals, and updates as weekOf local state updates
-  const {status: annualStatus, data: annualData} = useQuery(['annualGoals', { weekOf } ], () => fetch(`/api/annualGoals?year=${weekOf}`));
-  const {status: monthlyStatus, data: monthlyData} = useQuery(['monthlyGoals', { weekOf } ], () => fetch(`/api/monthlyGoals?month=${weekOf}`));
-  const {status: weeklyStatus, data: weeklyData} = useQuery(['weeklyGoals', { weekOf } ], () => fetch(`/api/weeklyGoals?week=${weekOf}`));
+  const { status: annualStatus, data: annualData } = useQuery(
+    ['annualGoals', { weekOf }],
+    () => fetch(`/api/annualGoals?year=${weekOf}`)
+  )
+  const { status: monthlyStatus, data: monthlyData } = useQuery(
+    ['monthlyGoals', { weekOf }],
+    () => fetch(`/api/monthlyGoals?month=${weekOf}`)
+  )
+  const { status: weeklyStatus, data: weeklyData } = useQuery(
+    ['weeklyGoals', { weekOf }],
+    () => fetch(`/api/weeklyGoals?week=${weekOf}`)
+  )
 
   // once the data is available, set the default nickname for the user
   useEffect(() => {
     if (annualData) {
-      setNickname(annualData[0].nickname);
-  }}, [annualData])
+      setNickname(annualData[0].nickname)
+    }
+  }, [annualData])
 
   // when the week change, repull the data with new period parameters
 
@@ -97,9 +112,9 @@ const Dashboard = () => {
   ) {
     return <span>Loading...</span>
   }
-  
+
   // TBU error page for when there are problem pulling from the database
-   
+
   return (
     <AppLayout>
       <button
@@ -109,40 +124,54 @@ const Dashboard = () => {
       >
         Sign Out
       </button>
-      <h1>Week of {moment(weekOf).utc().format("M/D/YY")}</h1>
+      <h1>Week of {moment(weekOf).utc().format('M/D/YY')}</h1>
       <div>
-        <button type="button" className="border border-cool-gray-900" onClick={() => setWeekOf(moment(weekOf).utc().subtract(7, 'days'))}>Prior Week</button>
-        <>  </>
-        <button type="button" className="border border-cool-gray-900" onClick={() => setWeekOf(moment(weekOf).utc().add(7, 'days'))}>Next Week</button>
+        <button
+          type="button"
+          className="border border-cool-gray-900"
+          onClick={() => setWeekOf(moment(weekOf).utc().subtract(7, 'days'))}
+        >
+          Prior Week
+        </button>
+        <> </>
+        <button
+          type="button"
+          className="border border-cool-gray-900"
+          onClick={() => setWeekOf(moment(weekOf).utc().add(7, 'days'))}
+        >
+          Next Week
+        </button>
       </div>
 
       <div className="dashboard-container">
-        {weeklyData && weeklyData.map((goal) => (
-          <div key={goal.id} className="dashboard-summary">
-            <p className="dashboard-goal">
-              Weekly{' '}
-              {goal.category.charAt(0).toUpperCase() + goal.category.slice(1)}{' '}
-              goal: {goal.goalStatement}
-            </p>
-            <button type="button" className="border border-cool-gray-900">
-              Mark Complete
-            </button>
-          </div>
-        ))}
+        {weeklyData &&
+          weeklyData.map((goal) => (
+            <div key={goal.id} className="dashboard-summary">
+              <p className="dashboard-goal">
+                Weekly{' '}
+                {goal.category.charAt(0).toUpperCase() + goal.category.slice(1)}{' '}
+                goal: {goal.goalStatement}
+              </p>
+              <button type="button" className="border border-cool-gray-900">
+                Mark Complete
+              </button>
+            </div>
+          ))}
       </div>
       <div className="dashboard-container">Some chart showing analytics</div>
       <div className="dashboard-container">
         <div className="dashboard-tab">
-          {annualData && annualData.map((goal) => (
-            <button
-              key={goal.id}
-              type="button"
-              className="dashboard-tablinks"
-              onClick={() => setNickname(goal.nickname)}
-            >
-              {goal.nickname}
-            </button>
-          ))}
+          {annualData &&
+            annualData.map((goal) => (
+              <button
+                key={goal.id}
+                type="button"
+                className="dashboard-tablinks"
+                onClick={() => setNickname(goal.nickname)}
+              >
+                {goal.nickname}
+              </button>
+            ))}
         </div>
 
         <CategoryGoals
