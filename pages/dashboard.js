@@ -9,12 +9,16 @@ import AppLayout from '../layouts/AppLayout'
 
 // renders the tabs contents
 // TBU potentially break out into a different component
-const CategoryGoals = ({
+const NicknameGoals = ({
   nickname,
   annualGoals,
   monthlyGoals,
   weeklyGoals
 }) => {
+  console.log(annualGoals)
+  console.log(monthlyGoals)
+  console.log(weeklyGoals)
+
   // TBU remove when this is not needed
   if (
     !nickname ||
@@ -149,7 +153,7 @@ const Dashboard = () => {
             <div key={goal.id} className="dashboard-summary">
               <p className="dashboard-goal">
                 Weekly{' '}
-                {goal.category.charAt(0).toUpperCase() + goal.category.slice(1)}{' '}
+                {goal.nickname.charAt(0).toUpperCase() + goal.nickname.slice(1)}{' '}
                 goal: {goal.goalStatement}
               </p>
               <button type="button" className="border border-cool-gray-900">
@@ -174,7 +178,7 @@ const Dashboard = () => {
             ))}
         </div>
 
-        <CategoryGoals
+        <NicknameGoals
           nickname={nickname}
           annualGoals={annualData}
           monthlyGoals={monthlyData}
@@ -191,7 +195,7 @@ const Dashboard = () => {
         </button>
         <button
           type="button"
-          disabled="true"
+          disabled
           onClick={() => router.push('/monthlyGoals')}
           className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 cursor-not-allowed opacity-50 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150"
         >
@@ -199,7 +203,7 @@ const Dashboard = () => {
         </button>
         <button
           type="button"
-          disabled="true"
+          disabled
           onClick={() => router.push('/weeklyGoals')}
           className="-ml-px relative inline-flex items-center px-4 py-2 rounded-r-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 cursor-not-allowed opacity-50 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150"
         >

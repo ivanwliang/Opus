@@ -18,15 +18,19 @@ export default async (req, res) => {
   // if no other req methods, then assumes it is a GET function
   const { month } = req.query
   // convert the month into a DateTime object, to match that of the Prisma database
-  const monthStartDate = moment(month).utc().startOf('month').toDate();
-  const monthEndDate = moment(month).utc().endOf('month').toDate();
+  const monthStartDate = moment(month).utc().startOf('month').toDate()
+  const monthEndDate = moment(month).utc().endOf('month').toDate()
+
+  console.log('month', month)
+  console.log('start', monthStartDate)
+  console.log('end', monthEndDate)
 
   let monthlyGoals = null
 
   try {
     monthlyGoals = await prisma.monthlyGoal.findMany({
       // hardcoded userId to test the api functionality
-      where: { 
+      where: {
         userId: 'Oa308DyTYrNsKqQnDGKw9aUJhBJ2',
         month: {
           gte: monthStartDate,

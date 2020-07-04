@@ -18,15 +18,15 @@ export default async (req, res) => {
   // if no other req methods, then assumes it is a GET function
   const { week } = req.query
   // convert the week into a DateTime object, to match that of the Prisma database
-  const weekStartDate = moment(week).utc().startOf('week').toDate();
-  const weekEndDate = moment(week).utc().endOf('week').toDate();
-  
+  const weekStartDate = moment(week).utc().startOf('week').toDate()
+  const weekEndDate = moment(week).utc().endOf('week').toDate()
+
   let weeklyGoals = null
 
   try {
     weeklyGoals = await prisma.weeklyGoal.findMany({
       // hardcoded userId to test the api functionality
-      where: { 
+      where: {
         userId: 'Oa308DyTYrNsKqQnDGKw9aUJhBJ2',
         week: {
           gte: weekStartDate,
