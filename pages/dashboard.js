@@ -6,116 +6,119 @@ import moment from 'moment'
 import fetch from '../utils/fetch'
 import { useAuth } from '../hooks/use-auth'
 import AppLayout from '../layouts/AppLayout'
+import ThemeForm from '../components/ThemeForm'
 
 // renders the tabs contents
 // TBU potentially break out into a different component
-const NicknameGoals = ({
-  nickname,
-  annualGoals,
-  monthlyGoals,
-  weeklyGoals
-}) => {
-  console.log(annualGoals)
-  console.log(monthlyGoals)
-  console.log(weeklyGoals)
+// const NicknameGoals = ({
+//   nickname,
+//   annualGoals,
+//   monthlyGoals,
+//   weeklyGoals
+// }) => {
+//   console.log(annualGoals)
+//   console.log(monthlyGoals)
+//   console.log(weeklyGoals)
 
-  // TBU remove when this is not needed
-  if (
-    !nickname ||
-    annualGoals.length < 1 ||
-    monthlyGoals.length < 1 ||
-    weeklyGoals.length < 1
-  ) {
-    return <span>Loading...</span>
-  }
+//   // TBU remove when this is not needed
+//   if (
+//     !nickname ||
+//     annualGoals.length < 1 ||
+//     monthlyGoals.length < 1 ||
+//     weeklyGoals.length < 1
+//   ) {
+//     return <span>Loading...</span>
+//   }
 
-  return (
-    <div>
-      <div className="dashboard-tabcontent">
-        <h4>Annual {nickname} Goal:</h4>
-        <p>
-          {
-            annualGoals.filter(
-              (goal) => goal.nickname.toLowerCase() === nickname.toLowerCase()
-            )[0].goalStatement
-          }
-        </p>
-        <button type="button" className="border border-cool-gray-900">
-          Mark Complete
-        </button>
-      </div>
-      <div className="dashboard-tabcontent">
-        <h4>Monthly {nickname} Goal:</h4>
-        <p>
-          {
-            monthlyGoals.filter(
-              (goal) => goal.nickname.toLowerCase() === nickname.toLowerCase()
-            )[0].goalStatement
-          }
-        </p>
-        <button type="button" className="border border-cool-gray-900">
-          Mark Complete
-        </button>
-      </div>
-      <div className="dashboard-tabcontent">
-        <h4>Weekly {nickname} Goal:</h4>
-        <p>
-          {
-            weeklyGoals.filter(
-              (goal) => goal.nickname.toLowerCase() === nickname.toLowerCase()
-            )[0].goalStatement
-          }
-        </p>
-        <button type="button" className="border border-cool-gray-900">
-          Mark Complete
-        </button>
-      </div>
-    </div>
-  )
-}
+//   return (
+//     <div>
+//       <div className="dashboard-tabcontent">
+//         <h4>Annual {nickname} Goal:</h4>
+//         <p>
+//           {
+//             annualGoals.filter(
+//               (goal) => goal.nickname.toLowerCase() === nickname.toLowerCase()
+//             )[0].goalStatement
+//           }
+//         </p>
+//         <button type="button" className="border border-cool-gray-900">
+//           Mark Complete
+//         </button>
+//       </div>
+//       <div className="dashboard-tabcontent">
+//         <h4>Monthly {nickname} Goal:</h4>
+//         <p>
+//           {
+//             monthlyGoals.filter(
+//               (goal) => goal.nickname.toLowerCase() === nickname.toLowerCase()
+//             )[0].goalStatement
+//           }
+//         </p>
+//         <button type="button" className="border border-cool-gray-900">
+//           Mark Complete
+//         </button>
+//       </div>
+//       <div className="dashboard-tabcontent">
+//         <h4>Weekly {nickname} Goal:</h4>
+//         <p>
+//           {
+//             weeklyGoals.filter(
+//               (goal) => goal.nickname.toLowerCase() === nickname.toLowerCase()
+//             )[0].goalStatement
+//           }
+//         </p>
+//         <button type="button" className="border border-cool-gray-900">
+//           Mark Complete
+//         </button>
+//       </div>
+//     </div>
+//   )
+// }
 
 const Dashboard = () => {
   const auth = useAuth()
   const router = useRouter()
 
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
   // state for changing "tabs" in the main dashboard
-  const [nickname, setNickname] = useState('')
+  // const [nickname, setNickname] = useState('')
   // local state to determine the week of period for the app
   // using moment to grab the current time, convert to UTC, identify the start of the week, format it for use
-  const [weekOf, setWeekOf] = useState(moment().utc().startOf('week').format())
+  // const [weekOf, setWeekOf] = useState(moment().utc().startOf('week').format())
 
   // fetching data for annual, monthly, and weekly goals, and updates as weekOf local state updates
-  const { status: annualStatus, data: annualData } = useQuery(
-    ['annualGoals', { weekOf }],
-    () => fetch(`/api/annualGoals?year=${weekOf}`)
-  )
-  const { status: monthlyStatus, data: monthlyData } = useQuery(
-    ['monthlyGoals', { weekOf }],
-    () => fetch(`/api/monthlyGoals?month=${weekOf}`)
-  )
-  const { status: weeklyStatus, data: weeklyData } = useQuery(
-    ['weeklyGoals', { weekOf }],
-    () => fetch(`/api/weeklyGoals?week=${weekOf}`)
-  )
+  // const { status: annualStatus, data: annualData } = useQuery(
+  //   ['annualGoals', { weekOf }],
+  //   () => fetch(`/api/annualGoals?year=${weekOf}`)
+  // )
+  // const { status: monthlyStatus, data: monthlyData } = useQuery(
+  //   ['monthlyGoals', { weekOf }],
+  //   () => fetch(`/api/monthlyGoals?month=${weekOf}`)
+  // )
+  // const { status: weeklyStatus, data: weeklyData } = useQuery(
+  //   ['weeklyGoals', { weekOf }],
+  //   () => fetch(`/api/weeklyGoals?week=${weekOf}`)
+  // )
 
   // once the data is available, set the default nickname for the user
-  useEffect(() => {
-    if (annualData) {
-      setNickname(annualData[0].nickname)
-    }
-  }, [annualData])
+  // useEffect(() => {
+  //   if (annualData) {
+  //     setNickname(annualData[0].nickname)
+  //   }
+  // }, [annualData])
 
   // when the week change, repull the data with new period parameters
 
   // logic waiting for data to load before rendering the page
   // TBU for some type of loading animation
-  if (
-    annualStatus === 'loading' ||
-    monthlyStatus === 'loading' ||
-    weeklyStatus === 'loading'
-  ) {
-    return <span>Loading...</span>
-  }
+  // if (
+  //   annualStatus === 'loading' ||
+  //   monthlyStatus === 'loading' ||
+  //   weeklyStatus === 'loading'
+  // ) {
+  //   return <span>Loading...</span>
+  // }
 
   // TBU error page for when there are problem pulling from the database
 
@@ -128,7 +131,16 @@ const Dashboard = () => {
       >
         Sign Out
       </button>
-      <h1>Week of {moment(weekOf).utc().format('M/D/YY')}</h1>
+
+      <button
+        type="button"
+        onClick={() => setIsModalOpen(true)}
+        className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs leading-4 font-medium rounded text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150"
+      >
+        Open Modal
+      </button>
+      <ThemeForm isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+      {/* <h1>Week of {moment(weekOf).utc().format('M/D/YY')}</h1>
       <div>
         <button
           type="button"
@@ -184,8 +196,8 @@ const Dashboard = () => {
           monthlyGoals={monthlyData}
           weeklyGoals={weeklyData}
         />
-      </div>
-      <span className="relative z-0 inline-flex shadow-sm rounded-md">
+      </div> */}
+      {/* <span className="relative z-0 inline-flex shadow-sm rounded-md">
         <button
           type="button"
           onClick={() => router.push('/goals')}
@@ -209,7 +221,7 @@ const Dashboard = () => {
         >
           Add Weekly Goals
         </button>
-      </span>
+      </span> */}
     </AppLayout>
   )
 }
