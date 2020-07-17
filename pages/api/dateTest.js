@@ -1,4 +1,5 @@
-import { startOfWeek, format, parse } from 'date-fns'
+import { startOfWeek, startOfDay, startOfYear, format, parse } from 'date-fns'
+import moment from 'moment'
 
 import prisma from '../../lib/prisma'
 
@@ -14,12 +15,18 @@ export default async (req, res) => {
     parse(formattedDate, 'MM/dd/yyyy', new Date())
   )
 
+  console.log(
+    'moment start of year:',
+    moment(today).utc().startOf('year').toDate()
+  )
+  console.log('date-fns start of year:', startOfYear(today))
+
   let theme
 
   try {
     theme = await prisma.theme.create({
       data: {
-        deadline: today,
+        deadline: startOfDay(today),
         themeStatement: 'testing date',
         user: {
           connect: { id: 'Oa308DyTYrNsKqQnDGKw9aUJhBJ2' }
