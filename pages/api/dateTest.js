@@ -6,9 +6,13 @@ export default async (req, res) => {
   const today = new Date()
   const formattedDate = format(today, 'MM/dd/yyyy')
 
+  console.log('right now:', today)
   console.log('start of week:', startOfWeek(today))
-  console.log(formattedDate)
-  console.log(parse(formattedDate, 'MM/dd/yyyy', new Date()))
+  console.log('formatted today (no time):', formattedDate)
+  console.log(
+    'parsed date (no time):',
+    parse(formattedDate, 'MM/dd/yyyy', new Date())
+  )
 
   let theme
 
