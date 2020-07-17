@@ -79,8 +79,6 @@ const Dashboard = () => {
   const auth = useAuth()
   const router = useRouter()
 
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
   // state for changing "tabs" in the main dashboard
   // const [nickname, setNickname] = useState('')
   // local state to determine the week of period for the app
@@ -126,7 +124,7 @@ const Dashboard = () => {
     <AppLayout>
       <button
         type="button"
-        className="border border-cool-gray-900"
+        className="block border border-cool-gray-900"
         onClick={() => auth.signOut().then(() => router.push('/'))}
       >
         Sign Out
@@ -134,12 +132,19 @@ const Dashboard = () => {
 
       <button
         type="button"
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => router.push('/themes')}
         className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs leading-4 font-medium rounded text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150"
       >
-        Open Modal
+        Add Theme
       </button>
-      <ThemeForm isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+      <br />
+      <button
+        type="button"
+        onClick={() => fetch('/api/dateTest')}
+        className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs leading-4 font-medium rounded text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150"
+      >
+        Add Date Entry
+      </button>
       {/* <h1>Week of {moment(weekOf).utc().format('M/D/YY')}</h1>
       <div>
         <button
