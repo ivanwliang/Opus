@@ -5,9 +5,8 @@ import { ProvideAuth, useAuth } from '../hooks/use-auth'
 
 import Dashboard from './dashboard'
 
-import Home from '.'
-
 import '../styles/index.css'
+import 'react-datepicker/dist/react-datepicker.css'
 
 // temporary styles for the dashboard to see the structure. to be removed
 import '../styles/dashboard.css'

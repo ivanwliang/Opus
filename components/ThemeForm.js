@@ -1,8 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
+import DatePicker from 'react-datepicker'
+import { useForm, Controller } from 'react-hook-form'
+import { addDays } from 'date-fns'
 
-const ThemeForm = () => {
+import fetch from '../utils/fetch'
+
+const ThemeForm = ({ user }) => {
+  const { register, handleSubmit, control, errors } = useForm()
+
+  const submitForm = (data) => {
+    // user.getIdToken(true).then((token) => {
+    console.log(data)
+    fetch('/api/themes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+        // Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(data)
+    })
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit(submitForm)}>
       <div>
         <div>
           <div>
@@ -25,7 +45,9 @@ const ThemeForm = () => {
               <div className="mt-1 flex rounded-md shadow-sm">
                 <input
                   id="statement"
-                  className="flex-1 form-input block w-full min-w-0 rounded-none rounded-r-md transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                  name="statement"
+                  ref={register({ required: true })}
+                  className="flex-1 form-input block w-full min-w-0 rounded-md transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 />
               </div>
             </div>
@@ -40,12 +62,58 @@ const ThemeForm = () => {
               <div className="mt-1 rounded-md shadow-sm">
                 <textarea
                   id="description"
+                  name="description"
+                  ref={register()}
                   rows="3"
                   className="form-textarea block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 />
               </div>
               <p className="mt-2 text-sm text-gray-500">
                 Write a few sentences about your goal in detail.
+              </p>
+            </div>
+
+            <div className="sm:col-span-6">
+              <label
+                htmlFor="deadline"
+                className="block text-sm font-medium leading-5 text-gray-700"
+              >
+                Deadline
+              </label>
+              <div className="mt-1 rounded-md ">
+                {/* Must use React-Hook-Form's Controller to wrap React-datepicker.
+                  TODO: Set default value to tomorrow's date instead of placeholder.
+                  Could do this with native DatePicker using [deadline, setDeadline] hooks
+                 */}
+                <Controller
+                  as={DatePicker}
+                  control={control}
+                  name="deadline"
+                  valueName="selected"
+                  onChange={([selected]) => selected}
+                  placeholderText="Select date"
+                  minDate={addDays(new Date(), 1)}
+                  peekNextMonth
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                />
+
+                {/* <DatePicker
+                  selected={deadlineDate}
+                  onChange={(date) => setDeadlineDate(date)}
+                  ref={register({ required: true })}
+                  minDate={addDays(new Date(), 1)}
+                  peekNextMonth
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                /> */}
+              </div>
+              <p className="mt-2 text-sm text-gray-500">
+                Clear goals have well-defined end states.
               </p>
             </div>
           </div>
