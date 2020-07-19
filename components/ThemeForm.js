@@ -9,15 +9,15 @@ const ThemeForm = ({ user }) => {
   const { register, handleSubmit, control, errors } = useForm()
 
   const submitForm = (data) => {
-    // user.getIdToken(true).then((token) => {
-    console.log(data)
-    fetch('/api/themes', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-        // Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify(data)
+    user.getIdToken(true).then((token) => {
+      fetch('/api/themes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+      })
     })
   }
 
