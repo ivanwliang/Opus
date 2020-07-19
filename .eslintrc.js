@@ -18,6 +18,7 @@ module.exports = {
     'no-console': 0,
     'multiline-comment-style': 0,
     'consistent-return': 0,
-    'react/no-unescaped-entities': 0
+    'react/no-unescaped-entities': 0,
+    'no-use-before-define': 0
   }
 }

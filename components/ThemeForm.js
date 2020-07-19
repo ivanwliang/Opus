@@ -1,24 +1,38 @@
-import React, { useState } from 'react'
+import React from 'react'
 import DatePicker from 'react-datepicker'
 import { useForm, Controller } from 'react-hook-form'
 import { addDays } from 'date-fns'
+import { useMutation, queryCache } from 'react-query'
 
 import fetch from '../utils/fetch'
 
+const createTheme = ({ data, token }) => {
+  fetch('/api/themes', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(data)
+  })
+}
+
 const ThemeForm = ({ user }) => {
   const { register, handleSubmit, control, errors } = useForm()
+  const [mutate] = useMutation(createTheme, {
+    onSuccess: () => {
+      queryCache.invalidateQueries(['themes', { user: user.uid }])
+    }
+  })
 
-  const submitForm = (data) => {
-    user.getIdToken(true).then((token) => {
-      fetch('/api/themes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(data)
-      })
-    })
+  const submitForm = async (data) => {
+    try {
+      const token = await user.getIdToken(true)
+
+      await mutate({ data, token })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
@@ -99,18 +113,6 @@ const ThemeForm = ({ user }) => {
                   dropdownMode="select"
                   className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 />
-
-                {/* <DatePicker
-                  selected={deadlineDate}
-                  onChange={(date) => setDeadlineDate(date)}
-                  ref={register({ required: true })}
-                  minDate={addDays(new Date(), 1)}
-                  peekNextMonth
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select"
-                  className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                /> */}
               </div>
               <p className="mt-2 text-sm text-gray-500">
                 Clear goals have well-defined end states.
