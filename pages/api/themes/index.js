@@ -1,5 +1,5 @@
-import prisma from '../../lib/prisma'
-import admin from '../../lib/firebase-admin'
+import prisma from '../../../lib/prisma'
+import admin from '../../../lib/firebase-admin'
 
 export default async (req, res) => {
   if (req.method === 'POST') {

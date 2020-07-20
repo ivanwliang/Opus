@@ -12,7 +12,6 @@ const authContext = createContext()
  * to any child component that calls useAuth()
  */
 export function ProvideAuth({ children }) {
-  // eslint-disable-next-line no-use-before-define
   const auth = useProvideAuth()
 
   return <authContext.Provider value={auth}>{children}</authContext.Provider>

@@ -1,124 +1,33 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
-import moment from 'moment'
 
 import fetch from '../utils/fetch'
 import { useAuth } from '../hooks/use-auth'
 import AppLayout from '../layouts/AppLayout'
-import ThemeForm from '../components/ThemeForm'
-
-// renders the tabs contents
-// TBU potentially break out into a different component
-// const NicknameGoals = ({
-//   nickname,
-//   annualGoals,
-//   monthlyGoals,
-//   weeklyGoals
-// }) => {
-//   console.log(annualGoals)
-//   console.log(monthlyGoals)
-//   console.log(weeklyGoals)
-
-//   // TBU remove when this is not needed
-//   if (
-//     !nickname ||
-//     annualGoals.length < 1 ||
-//     monthlyGoals.length < 1 ||
-//     weeklyGoals.length < 1
-//   ) {
-//     return <span>Loading...</span>
-//   }
-
-//   return (
-//     <div>
-//       <div className="dashboard-tabcontent">
-//         <h4>Annual {nickname} Goal:</h4>
-//         <p>
-//           {
-//             annualGoals.filter(
-//               (goal) => goal.nickname.toLowerCase() === nickname.toLowerCase()
-//             )[0].goalStatement
-//           }
-//         </p>
-//         <button type="button" className="border border-cool-gray-900">
-//           Mark Complete
-//         </button>
-//       </div>
-//       <div className="dashboard-tabcontent">
-//         <h4>Monthly {nickname} Goal:</h4>
-//         <p>
-//           {
-//             monthlyGoals.filter(
-//               (goal) => goal.nickname.toLowerCase() === nickname.toLowerCase()
-//             )[0].goalStatement
-//           }
-//         </p>
-//         <button type="button" className="border border-cool-gray-900">
-//           Mark Complete
-//         </button>
-//       </div>
-//       <div className="dashboard-tabcontent">
-//         <h4>Weekly {nickname} Goal:</h4>
-//         <p>
-//           {
-//             weeklyGoals.filter(
-//               (goal) => goal.nickname.toLowerCase() === nickname.toLowerCase()
-//             )[0].goalStatement
-//           }
-//         </p>
-//         <button type="button" className="border border-cool-gray-900">
-//           Mark Complete
-//         </button>
-//       </div>
-//     </div>
-//   )
-// }
 
 const Dashboard = () => {
   const auth = useAuth()
   const router = useRouter()
 
-  // state for changing "tabs" in the main dashboard
-  // const [nickname, setNickname] = useState('')
+  const { isLoading, isError, data, error } = useQuery(
+    ['themes', { user: 'WhO8DMS0TpWR5vDo5ohNP4ITQ7v1' }],
+    () => {
+      return fetch(`/api/themes/WhO8DMS0TpWR5vDo5ohNP4ITQ7v1`)
+    }
+  )
+
+  if (isLoading) {
+    return <span>Loading...</span>
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>
+  }
+
   // local state to determine the week of period for the app
   // using moment to grab the current time, convert to UTC, identify the start of the week, format it for use
   // const [weekOf, setWeekOf] = useState(moment().utc().startOf('week').format())
-
-  // fetching data for annual, monthly, and weekly goals, and updates as weekOf local state updates
-  // const { status: annualStatus, data: annualData } = useQuery(
-  //   ['annualGoals', { weekOf }],
-  //   () => fetch(`/api/annualGoals?year=${weekOf}`)
-  // )
-  // const { status: monthlyStatus, data: monthlyData } = useQuery(
-  //   ['monthlyGoals', { weekOf }],
-  //   () => fetch(`/api/monthlyGoals?month=${weekOf}`)
-  // )
-  // const { status: weeklyStatus, data: weeklyData } = useQuery(
-  //   ['weeklyGoals', { weekOf }],
-  //   () => fetch(`/api/weeklyGoals?week=${weekOf}`)
-  // )
-
-  // once the data is available, set the default nickname for the user
-  // useEffect(() => {
-  //   if (annualData) {
-  //     setNickname(annualData[0].nickname)
-  //   }
-  // }, [annualData])
-
-  // when the week change, repull the data with new period parameters
-
-  // logic waiting for data to load before rendering the page
-  // TBU for some type of loading animation
-  // if (
-  //   annualStatus === 'loading' ||
-  //   monthlyStatus === 'loading' ||
-  //   weeklyStatus === 'loading'
-  // ) {
-  //   return <span>Loading...</span>
-  // }
-
-  // TBU error page for when there are problem pulling from the database
 
   return (
     <AppLayout>
@@ -137,14 +46,16 @@ const Dashboard = () => {
       >
         Add Theme
       </button>
-      <br />
-      <button
-        type="button"
-        onClick={() => fetch('/api/dateTest')}
-        className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs leading-4 font-medium rounded text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150"
-      >
-        Add Date Entry
-      </button>
+
+      <ul>
+        {data.map((theme) => (
+          <li key={theme.id}>
+            {theme.themeStatement} - {theme.themeDescription}. Deadline:{' '}
+            {theme.deadline}
+          </li>
+        ))}
+      </ul>
+
       {/* <h1>Week of {moment(weekOf).utc().format('M/D/YY')}</h1>
       <div>
         <button

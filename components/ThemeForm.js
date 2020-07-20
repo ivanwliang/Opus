@@ -21,7 +21,10 @@ const ThemeForm = ({ user }) => {
   const { register, handleSubmit, control, errors } = useForm()
   const [mutate] = useMutation(createTheme, {
     onSuccess: () => {
-      queryCache.invalidateQueries(['themes', { user: user.uid }])
+      queryCache.invalidateQueries([
+        'themes',
+        { user: 'WhO8DMS0TpWR5vDo5ohNP4ITQ7v1' }
+      ])
     }
   })
 
