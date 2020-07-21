@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
 
@@ -11,9 +11,9 @@ const Dashboard = () => {
   const router = useRouter()
 
   const { isLoading, isError, data, error } = useQuery(
-    ['themes', { user: 'WhO8DMS0TpWR5vDo5ohNP4ITQ7v1' }],
+    auth.user ? ['themes', { user: auth.user.uid }] : null,
     () => {
-      return fetch(`/api/themes/WhO8DMS0TpWR5vDo5ohNP4ITQ7v1`)
+      return fetch(`/api/themes/${auth.user.uid}`)
     }
   )
 
@@ -48,12 +48,13 @@ const Dashboard = () => {
       </button>
 
       <ul>
-        {data.map((theme) => (
-          <li key={theme.id}>
-            {theme.themeStatement} - {theme.themeDescription}. Deadline:{' '}
-            {theme.deadline}
-          </li>
-        ))}
+        {data &&
+          data.map((theme) => (
+            <li key={theme.id}>
+              {theme.themeStatement} - {theme.themeDescription}. Deadline:{' '}
+              {theme.deadline}
+            </li>
+          ))}
       </ul>
 
       {/* <h1>Week of {moment(weekOf).utc().format('M/D/YY')}</h1>

@@ -1,5 +1,5 @@
 import prisma from '../../../lib/prisma'
-import admin from '../../../lib/firebase-admin'
+// import admin from '../../../lib/firebase-admin'
 
 export default async (req, res) => {
   const {
@@ -12,13 +12,13 @@ export default async (req, res) => {
   try {
     // const { uid } = await admin.auth().verifyIdToken(idToken)
 
-    if (userId === 'WhO8DMS0TpWR5vDo5ohNP4ITQ7v1') {
-      themes = await prisma.theme.findMany({
-        where: {
-          userId
-        }
-      })
-    }
+    // if (userId === 'WhO8DMS0TpWR5vDo5ohNP4ITQ7v1') {
+    themes = await prisma.theme.findMany({
+      where: {
+        userId
+      }
+    })
+    // }
   } catch (error) {
     console.error(error)
   }

@@ -1,9 +1,6 @@
 import React from 'react'
-import { useRouter } from 'next/router'
 
-import { ProvideAuth, useAuth } from '../hooks/use-auth'
-
-import Dashboard from './dashboard'
+import { ProvideAuth } from '../hooks/use-auth'
 
 import '../styles/index.css'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -13,25 +10,6 @@ import '../styles/dashboard.css'
 
 // eslint-disable-next-line get-off-my-lawn/prefer-arrow-functions
 function MyApp({ Component, pageProps }) {
-  // const router = useRouter()
-  // const auth = useAuth()
-
-  // let ComponentToRender = Component
-
-  // if (auth) {
-  //   if (
-  //     router.pathname === '/' ||
-  //     router.pathname === '/signin' ||
-  //     router.pathname === '/signup'
-  //   ) {
-  //     ComponentToRender = Dashboard
-  //   }
-  // }
-
-  // if (!auth && router.pathname === '/dashboard') {
-  //   ComponentToRender = Home
-  // }
-
   return (
     <ProvideAuth>
       <Component {...pageProps} />

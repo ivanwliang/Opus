@@ -1,6 +1,8 @@
 /* eslint-disable import/exports-last */
 /* eslint-disable get-off-my-lawn/prefer-arrow-functions */
 import React, { useState, useEffect, useContext, createContext } from 'react'
+import Router from 'next/router'
+import cookie from 'js-cookie'
 import fetch from 'isomorphic-unfetch'
 
 import firebase from '../lib/firebase'
@@ -17,24 +19,6 @@ export function ProvideAuth({ children }) {
   return <authContext.Provider value={auth}>{children}</authContext.Provider>
 }
 
-// Grab user from DB with additional fields instead of using firebase's user object
-export const verifyTokenAndGetUser = async (user) => {
-  if (!user) return null
-
-  const idToken = await user.getIdToken(true)
-
-  console.log(idToken)
-  const dbUser = await fetch('/api/verifyToken', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(idToken)
-  })
-
-  return dbUser.json()
-}
-
 /*
  * Hook for child components to get the auth object
  * and re-render when it changes
@@ -47,71 +31,64 @@ export const useAuth = () => {
 function useProvideAuth() {
   const [user, setUser] = useState(null)
 
+  // Set cookie with user object to work with serverless architecture
+  const handleUser = (user) => {
+    if (user) {
+      setUser(user)
+      cookie.set('nextjs-serverless-auth', true, { expires: 1 })
+
+      return user
+    }
+
+    setUser(false)
+    cookie.remove('nextjs-serverless-auth')
+
+    return false
+  }
+
   /**
    * Wrap any Firebase methods we want to use, making sure
    * to save the user to state
    */
   const signIn = (email, password) => {
+    Router.push('/dashboard')
+
     return firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((res) => {
-        // const dbUser = await verifyTokenAndGetUser(res.user)
-
-        setUser(res.user)
-
-        return res.user
-      })
+      .then((res) => handleUser(res.user))
   }
 
   const signUp = (email, password, displayName) => {
+    Router.push('/dashboard')
+
     return firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(async (res) => {
         // Create the user profile in our database
 
-        const resUser = res.user
+        const user = res.user
 
         await fetch('/api/profile', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ resUser, displayName })
+          body: JSON.stringify({ user, displayName })
         })
 
-        // const dbUser = await verifyTokenAndGetUser(resUser)
-
-        setUser(resUser)
-
-        return resUser
+        handleUser(user)
       })
   }
 
   const signOut = () => {
+    Router.push('/')
+
     return firebase
       .auth()
       .signOut()
-      .then(() => setUser(false))
-  }
-
-  const sendPasswordResetEmail = (email) => {
-    return firebase
-      .auth()
-      .sendPasswordResetEmail(email)
-      .then(() => {
-        return true
-      })
-  }
-
-  const confirmPasswordReset = (code, newPassword) => {
-    return firebase
-      .auth()
-      .confirmPasswordReset(code, newPassword)
-      .then(() => {
-        return true
-      })
+      .then(() => handleUser(false))
   }
 
   /**
@@ -121,25 +98,7 @@ function useProvideAuth() {
    * with the latest auth object.
    */
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((resUser) => {
-      if (resUser) {
-        // This call to create a new user profile is for oauth providers that
-        // don't go through our sign up form
-        // const newUser = await fetch('/api/create', {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json'
-        //   },
-        //   body: JSON.stringify({ resUser })
-        // })
-
-        // const dbUser = await verifyTokenAndGetUser(resUser)
-
-        setUser(resUser)
-      } else {
-        setUser(false)
-      }
-    })
+    const unsubscribe = firebase.auth().onAuthStateChanged(handleUser)
 
     // Clean up subscription on unmount
     return () => unsubscribe()
@@ -150,8 +109,6 @@ function useProvideAuth() {
     user,
     signIn,
     signUp,
-    signOut,
-    sendPasswordResetEmail,
-    confirmPasswordReset
+    signOut
   }
 }

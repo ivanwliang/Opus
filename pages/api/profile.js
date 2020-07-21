@@ -19,7 +19,7 @@ const getUser = async (uid) => {
 }
 
 export default async (req, res) => {
-  const { resUser: user, displayName: emailAuthDisplayName = null } = req.body
+  const { user, displayName: emailAuthDisplayName = null } = req.body
 
   // This function can get called without a user due to
   // "onAuthStateChanged" when logging out

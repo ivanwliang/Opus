@@ -19,6 +19,7 @@ module.exports = {
     'multiline-comment-style': 0,
     'consistent-return': 0,
     'react/no-unescaped-entities': 0,
-    'no-use-before-define': 0
+    'no-use-before-define': 0,
+    'no-shadow': 0
   }
 }
