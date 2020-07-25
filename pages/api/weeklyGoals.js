@@ -3,6 +3,11 @@ import moment from 'moment'
 import prisma from '../../lib/prisma'
 
 export default async (req, res) => {
+
+  // console.log(req.headers.authorization);
+  // let userObject = await verifyToken(req, res);
+  // console.log(userObject);
+  
   if (req.method === 'POST') {
     res.status(200).json('to be built later')
   }
