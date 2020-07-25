@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
 
@@ -17,6 +17,35 @@ const Dashboard = () => {
     }
   )
 
+  // local state to determine the week of period for the app
+  // using moment to grab the current time, convert to UTC, identify the start of the week, format it for use
+  const [weekOf, setWeekOf] = useState(new Date())
+  const [weeklyData, setWeeklyData] = useState('');
+
+  useEffect(() => {
+    if (auth.user) {
+      auth.user.getIdToken(true).then((token) => {
+        fetch(`/api/weeklyGoals?week=${weekOf}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+        })
+          .then((res) => {
+            console.log(res);
+            // res.ok not working, need to confirm response objective
+            // if(!res.ok) {
+            //   throw new Error('Something went wrong, please try again later');
+            // }
+            setWeeklyData(res);
+            return res.json();
+          })
+          .catch(err => {console.log(err)})
+      })
+    }
+  }, [auth.user]);
+
   if (isLoading) {
     return <span>Loading...</span>
   }
@@ -24,10 +53,6 @@ const Dashboard = () => {
   if (isError) {
     return <span>Error: {error.message}</span>
   }
-
-  // local state to determine the week of period for the app
-  // using moment to grab the current time, convert to UTC, identify the start of the week, format it for use
-  // const [weekOf, setWeekOf] = useState(moment().utc().startOf('week').format())
 
   return (
     <AppLayout>

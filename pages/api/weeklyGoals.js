@@ -1,13 +1,17 @@
 import moment from 'moment'
 
+import verifyToken from './verifyToken'
+
 import prisma from '../../lib/prisma'
 
 export default async (req, res) => {
+  // (2020.07.25) verifyTokenRes is currently a string that's returned from verifyToken.js
+  const verifyTokenRes = await verifyToken(req, res);
 
-  // console.log(req.headers.authorization);
-  // let userObject = await verifyToken(req, res);
-  // console.log(userObject);
-  
+  if (!verifyTokenRes) {
+    res.status(404).json('Something went wrong. Please try again.')
+  }
+
   if (req.method === 'POST') {
     res.status(200).json('to be built later')
   }
@@ -32,11 +36,11 @@ export default async (req, res) => {
     weeklyGoals = await prisma.weeklyGoal.findMany({
       // hardcoded userId to test the api functionality
       where: {
-        userId: 'Oa308DyTYrNsKqQnDGKw9aUJhBJ2',
-        week: {
-          gte: weekStartDate,
-          lte: weekEndDate
-        }
+        userId: verifyTokenRes,
+        // week: {
+        //   gte: weekStartDate,
+        //   lte: weekEndDate
+        // }
       }
     })
   } catch (error) {
